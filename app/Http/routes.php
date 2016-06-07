@@ -16,3 +16,11 @@ Route::post('register',array(
     'as'=>'register',
     'uses'=>'FormController@create'
 ));
+Route::get('validate/{token}',array(
+    'as'=>'validate',
+    'uses'=>'FormController@validateToken'
+));
+Route::post('userlogin',array(
+    'as'=>'userlogin',
+    'uses'=>'FormController@loginUser'
+));
