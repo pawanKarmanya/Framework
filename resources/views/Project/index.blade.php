@@ -572,7 +572,7 @@
 <script>
   $.widget.bridge('uibutton', $.ui.button);
 </script>
-
+@yield('footer')
 <!-- Bootstrap 3.3.6 -->
 <script src="/bootstrap/js/bootstrap.min.js"></script>
 <!-- Morris.js charts -->
@@ -605,7 +605,7 @@
 <script src="/dist/js/pages/dashboard.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="/dist/js/demo.js"></script>
-@yield('footer')
+
 
 </body>
 </html>

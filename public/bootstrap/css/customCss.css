@@ -1,0 +1,15 @@
+  label.error{
+                border: white;
+            }
+          ul.error{
+                border: 0px;
+                color: black;
+            }
+            .error{
+                list-style: none;
+                color: red;
+                border: 1px solid red;
+            }
+            .para{
+                color: red;
+            }

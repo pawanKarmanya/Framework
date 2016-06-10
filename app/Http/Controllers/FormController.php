@@ -10,6 +10,7 @@ use App\User;
 use Illuminate\Support\Facades\Crypt;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+
 class FormController extends Controller {
 
     /**
@@ -19,7 +20,10 @@ class FormController extends Controller {
      */
     public function index() {
         //
-        return view('Project/login');
+        return view('pages/examples/login');
+    }
+    public function main(){
+        return view('index');
     }
 
     /**
@@ -43,59 +47,72 @@ class FormController extends Controller {
                             ->withErrors($validator)
                             ->withInput();
         } else {
-            $FirstName = $request->FirstName;
-            $LastName = $request->LastName;
-            $GenderId = $request->GenderId;
-            $UserName = $request->UserName;
-            $Password = $request->Password;
-            $ValidationToken = str_shuffle($UserName);
-            $InsertValues = User::create(['FirstName' => $FirstName,
-                        'LastName' => $LastName,
-                        'GenderId' => $GenderId,
-                        'UserName' => $UserName,
-                        'Password' => $Password,
-                        'ValidationToken' => $ValidationToken,
-                        'IsValidated' => 0,
-                        'CreatedAt' => Carbon::now()
-            ]);
-            
-            $Link="http://framework.karmanya.co.in/validate/".$ValidationToken;
-            
 
-            Mail::raw($Link, function ($message)use ($UserName) {
-                //
-                $message->from('pawankumar.s@karmanya.co.in', 'Registration');
+            
+                $FirstName = $request->FirstName;
+                $LastName = $request->LastName;
+                $GenderId = $request->GenderId;
+                $UserName = $request->UserName;
+                $Password = $request->Password;
+                $ValidationToken = md5($UserName);
+                $LogIn = User::where('UserName', $UserName)->count();
+            if ($LogIn == 1) {
 
-                $message->to($UserName)->subject('Validate the Registration');
-            });
-            $Message="Registration complete please validate the link sent to your email";
-            return redirect('registration')->with('message',$Message);
-             
+                $errorMessage = "UserName Already registered Please use other Email address";
+                return view('pages/examples/RegistrationForm')->with('errorMessage', $errorMessage);
+            } else {
+                $InsertValues = User::create(['FirstName' => $FirstName,
+                            'LastName' => $LastName,
+                            'GenderId' => $GenderId,
+                            'UserName' => $UserName,
+                            'Password' => $Password,
+                            'ValidationToken' => $ValidationToken,
+                            'CreatedAt' => Carbon::now()
+                ]);
+
+                $Link = "http://framework.karmanya.co.in/validate/" . $ValidationToken;
+
+
+                Mail::raw($Link, function ($message)use ($UserName) {
+                    //
+                    $message->from('pawankumar.s@karmanya.co.in', 'Registration');
+
+                    $message->to($UserName)->subject('Validate the Registration');
+                });
+                $Message = "Registration complete please validate the link sent to your email";
+                return view('pages/examples/RegistrationForm')->with('message', $Message);
+            }
         }
     }
 
     public function createView() {
         //
-        return view('Project/RegistrationForm');
+        return view('pages/examples/RegistrationForm');
     }
 
-    public function validateToken($token){
+    public function validateToken($token) {
+
         $Id = User::where('ValidationToken', $token)->count();
-        if($Id==1){
-            User::where('ValidationToken', $token)
-         ->update(['IsValidated' => 1,
-             'ValidationToken'=>" "]);
-            $message="Profile has been activated You can login Now";
-            return view('Project/Valid',['message'=>$message]);
-            
-        }
-        else{
-            $message="Link has expired";
-           return view('Project/Valid',['message'=>$message]);
+        if ($Id == 1) {
+            $IsValidate = User::select('IsValidated')->where('ValidationToken', $token)->get();
+            $Isval = $IsValidate->toArray();
+
+            if ($Isval[0]['IsValidated'] == 0) {
+
+                User::where('ValidationToken', $token)
+                        ->update(['IsValidated' => 1]);
+                $message = "Profile has been activated";
+                return view('Project/Valid', ['message' => $message]);
+            } else {
+
+                $message = "Link has expired";
+                return view('Project/Valid', ['message' => $message]);
+            }
         }
     }
-    public function loginUser(Request $request){
-        
+
+    public function loginUser(Request $request) {
+
         $validator = Validator::make($request->all(), [
                     'UserName' => 'required|email',
                     'Password' => 'required|min:8',
@@ -106,8 +123,20 @@ class FormController extends Controller {
             return redirect('login')
                             ->withErrors($validator)
                             ->withInput();
+        } else {
+            $UserName = $request->UserName;
+            $Password = $request->Password;
+            $LogIn = User::where('UserName', $UserName)
+                            ->where('Password', $Password)->count();
+            if ($LogIn == 0) {
+                $message="UserName Password doesn't exit";
+                return view('pages/examples/login')->with('message',$message);
+            } else {
+                return view('index');
+            }
         }
     }
+
     /**
      * Store a newly created resource in storage.
      *

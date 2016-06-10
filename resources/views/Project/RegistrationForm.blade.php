@@ -1,4 +1,23 @@
 @extends('Project/index')
+@section('style')
+   <style>
+            label.error{
+                border: white;
+            }
+          ul.error{
+                border: 0px;
+                color: black;
+            }
+            .error{
+                list-style: none;
+                color: red;
+                border: 1px solid red;
+            }
+            .para{
+                color: red;
+            }
+        </style>
+@endsection
 @section('content')
 <div class="col-md-6 col-md-offset-3">
     @if(isset($message))
@@ -26,7 +45,7 @@
     <div class="register-box-body">
         <p class="login-box-msg">Register a new membership</p>
 
-        <form action="{{URL::route('register')}}" method="post">
+        <form action="{{URL::route('register')}}" method="post" id="registrationform">
             {{ csrf_field() }}
             <div class="form-group has-feedback">
                 <input type="text" class="form-control" name="FirstName" placeholder="First Name">
@@ -43,7 +62,7 @@
             <div class="form-group has-feedback">
             <div class="radio">
                 <label>
-                    <input type="radio" name="GenderId" id="GenderId" value="Male" >
+                    <input type="radio" name="GenderId" id="GenderId" value="Male" checked>
                 Male
                 </label>
             </div>
@@ -55,11 +74,11 @@
             </div>
             </div>
             <div class="form-group has-feedback">
-                <input type="password" class="form-control" name="Password" placeholder="Password">
+                <input type="password" class="form-control" id="Password" name="Password" placeholder="Password">
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
             </div>
             <div class="form-group has-feedback">
-                <input type="password" class="form-control" placeholder="Confirm Password">
+                <input type="password" class="form-control" name="ConfirmPassword" placeholder="Confirm Password">
                 <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
             </div>
             <div class="row">
@@ -76,4 +95,8 @@
     </div>
     <!-- /.form-box -->
 </div>
+@endsection
+@section('footer')
+<script src='/bootstrap/js/jqueryvalidation.js' type="text/javascript"></script>
+<script src="/bootstrap/js/validation.js" type="text/javascript"></script>
 @endsection
