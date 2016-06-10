@@ -1,29 +1,61 @@
 $(document).ready(function () {
 
+    $('#changePassword').validate({
+        rules: {
+            OldPassword: {
+                required: true,
+                minlength: 8
+            },
+            NewPassword: {
+                required: true,
+                minlength: 8
+            },
+            ConfirmPassword: {
+                required: true,
+                equalTo: "#Password"
+            }
+        },
+        messages: {
+            OldPassword: {
+                required: "Please confirm Old password",
+                minlength: "minimum 8 characters"
+            },
+            NewPassword: {
+                required: "Password is required",
+                minlength: "minimum 8 characters"
+            },
+            ConfirmPassword: {
+                required: "Field is required",
+                equalTo: "It should match with Password"
+            }
+        }
 
-$('#loginform').validate({
-    rules:{
-        UserName:{
-            required:true,
-            email:true
+    });
+
+
+    $('#loginform').validate({
+        rules: {
+            UserName: {
+                required: true,
+                email: true
+            },
+            Password: {
+                required: true,
+                minlength: 8
+            }
         },
-        Password:{
-            required:true,
-            minlength:8
+        messages: {
+            UserName: {
+                required: "Enter a UserName to login",
+                email: "User Name should be registered email address"
+            },
+            Password: {
+                required: "Please Enter Password to login",
+                minlenght: "Password should be minimum 8 characters"
+            }
         }
-    },
-    messages:{
-        UserName:{
-            required:"Enter a UserName to login",
-            email:"User Name should be registered email address"
-        },
-        Password:{
-            required:"Please Enter Password to login",
-            minlenght:"Password should be minimum 8 characters"
-        }
-    }
-    
-});
+
+    });
     $('#registrationform').validate({
         rules: {
             FirstName: {
@@ -34,18 +66,17 @@ $('#loginform').validate({
                 required: true,
                 regex: true
             },
-            
             UserName: {
                 required: true,
-                email:true
+                email: true
             },
             Password: {
                 required: true,
-                minlength:8
+                minlength: 8
             },
             ConfirmPassword: {
                 required: true,
-                equalTo:"#Password"
+                equalTo: "#Password"
             }
         },
         messages: {
@@ -57,23 +88,22 @@ $('#loginform').validate({
                 required: "Last Name is Required",
                 regex: "It should be a valid Last Name"
             },
-            
             UserName: {
                 required: "User Name is required",
-                email:"Enter Valid Email for UserName field"
+                email: "Enter Valid Email for UserName field"
             },
             Password: {
                 required: "Password is required",
-                minlength:"minimum 8 characters"
+                minlength: "minimum 8 characters"
             },
             ConfirmPassword: {
                 required: "Field is required",
-                equalTo:"It should match with Password"
+                equalTo: "It should match with Password"
             }
         }
 
     });
-    
+
 
     jQuery.validator.addMethod("capstwo", function (value, element) {
         return this.optional(element) || /^[A-Z]+$/.test(value);

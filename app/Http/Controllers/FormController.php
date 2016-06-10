@@ -10,6 +10,7 @@ use App\User;
 use Illuminate\Support\Facades\Crypt;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Auth;
 
 class FormController extends Controller {
 
@@ -22,7 +23,8 @@ class FormController extends Controller {
         //
         return view('pages/examples/login');
     }
-    public function main(){
+
+    public function main() {
         return view('index');
     }
 
@@ -48,14 +50,14 @@ class FormController extends Controller {
                             ->withInput();
         } else {
 
-            
-                $FirstName = $request->FirstName;
-                $LastName = $request->LastName;
-                $GenderId = $request->GenderId;
-                $UserName = $request->UserName;
-                $Password = $request->Password;
-                $ValidationToken = md5($UserName);
-                $LogIn = User::where('UserName', $UserName)->count();
+
+            $FirstName = $request->FirstName;
+            $LastName = $request->LastName;
+            $GenderId = $request->GenderId;
+            $UserName = $request->UserName;
+            $Password = $request->Password;
+            $ValidationToken = md5($UserName);
+            $LogIn = User::where('UserName', $UserName)->count();
             if ($LogIn == 1) {
 
                 $errorMessage = "UserName Already registered Please use other Email address";
@@ -128,12 +130,17 @@ class FormController extends Controller {
             $Password = $request->Password;
             $LogIn = User::where('UserName', $UserName)
                             ->where('Password', $Password)->count();
-            if ($LogIn == 0) {
-                $message="UserName Password doesn't exit";
-                return view('pages/examples/login')->with('message',$message);
-            } else {
-                return view('index');
-            }
+             if (Auth::attempt(['UserName' => $UserName, 'password' => $Password])) {
+               echo "hai";
+            // Authentication passed...
+           //return redirect('/');
+        }
+//            if ($LogIn == 0) {
+//                $message = "UserName Password doesn't exit";
+//                return view('pages/examples/login')->with('message', $message);
+//            } else {
+//                return view('index');
+//            }
         }
     }
 
@@ -143,6 +150,27 @@ class FormController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    public function changePassword() {
+        
+        echo User::auth();
+       //return view('pages/examples/changePassword');
+    }
+
+    public function changeSubmit(Request $request) {
+        $validator = Validator::make($request->all(), [
+                    'OldPassword' => 'required|min:8',
+                    'NewPassword' => 'required|min:8',
+                    
+        ]);
+
+        if ($validator->fails()) {
+
+            return redirect('changepassword')
+                            ->withErrors($validator)
+                            ->withInput();
+        }
+    }
+
     public function store(Request $request) {
         //
     }

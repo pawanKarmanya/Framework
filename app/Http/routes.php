@@ -3,22 +3,20 @@
 
 Route::get('/', array(
     'as'=>'/',
-     
     'uses'=>'FormController@main'
 ));
 Route::get('login',array(
     'as'=>'login',
     'uses'=>'FormController@index'
 ));
-Route::get('registration',array(
+Route::get('register',array(
     'as'=>'registration',
-     
     'uses'=>'FormController@createView'
 ));
-Route::post('registration',array(
+Route::post('register',array(
     'as'=>'register',
-    'uses'=>'FormController@create'
-));
+    'uses'=>'FormController@create'));
+
 Route::get('validate/{token}',array(
     'as'=>'validate',
     'uses'=>'FormController@validateToken'
@@ -27,7 +25,10 @@ Route::post('/',array(
     'as'=>'userlogin',
     'uses'=>'FormController@loginUser'
 ));
-
-Route::auth();
-
-Route::get('/home', 'HomeController@index');
+Route::get('changepassword',array(
+    'as'=>'changepassword',
+    'uses'=> 'FormController@changePassword'));
+Route::post('changepassword',array(
+     'as'=>'change',
+     'uses'=> 'FormController@changeSubmit'
+));

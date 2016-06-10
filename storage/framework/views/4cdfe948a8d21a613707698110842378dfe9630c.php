@@ -59,7 +59,7 @@
   <div class="register-box-body">
     <p class="login-box-msg">Register a new membership</p>
 
-    <form action="<?php echo e(URL::route('register')); ?>" method="post" id="registrationform">
+    <form action="<?php echo e(URL::Route('register')); ?>" method="post" id="registrationform">
             <?php echo e(csrf_field()); ?>
 
             <div class="form-group has-feedback">
@@ -105,10 +105,7 @@
                 <!-- /.col -->
             </div>
         </form>
-
-
-
-    <a href="<?php echo e(URL::route('login')); ?>" class="text-center">I already have a membership</a>
+    <a href="<?php echo e(URL::Route('login')); ?>">Already Registered</a>
   </div>
   <!-- /.form-box -->
 </div>

@@ -28,25 +28,27 @@
 <body class="hold-transition register-page">
     <div class="col-md-6 col-md-offset-3">
         
-        @if(isset($errorMessage))
+        <?php if(isset($errorMessage)): ?>
     <div class="alert alert-danger">
-        {{$errorMessage}}
+        <?php echo e($errorMessage); ?>
+
     </div>
-    @endif
-    @if(isset($message))
+    <?php endif; ?>
+    <?php if(isset($message)): ?>
     <div class="alert alert-info">
-        {{$message}}
+        <?php echo e($message); ?>
+
     </div>
-    @endif
-    @if (count($errors) > 0)
+    <?php endif; ?>
+    <?php if(count($errors) > 0): ?>
     <div class="alert alert-danger">
         <ul class="error">
-            @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
-            @endforeach
+            <?php foreach($errors->all() as $error): ?>
+            <li><?php echo e($error); ?></li>
+            <?php endforeach; ?>
         </ul>
     </div>
-    @endif
+    <?php endif; ?>
 
 </div>
 <div class="register-box">
@@ -57,8 +59,9 @@
   <div class="register-box-body">
     <p class="login-box-msg">Register a new membership</p>
 
-    <form action="{{URL::Route('register')}}" method="post" id="registrationform">
-            {{ csrf_field() }}
+    <form action="<?php echo e(URL::route('register')); ?>" method="post" id="registrationform">
+            <?php echo e(csrf_field()); ?>
+
             <div class="form-group has-feedback">
                 <input type="text" class="form-control" name="FirstName" placeholder="First Name">
                 <span class="glyphicon glyphicon-user form-control-feedback"></span>
@@ -102,7 +105,10 @@
                 <!-- /.col -->
             </div>
         </form>
-    <a href="{{URL::Route('login')}}">Already Registered</a>
+
+
+
+    <a href="<?php echo e(URL::route('login')); ?>" class="text-center">I already have a membership</a>
   </div>
   <!-- /.form-box -->
 </div>
