@@ -21,7 +21,13 @@ class FormController extends Controller {
      */
     public function index() {
         //
+        
+        if(Auth::check()){
+            return redirect('/');
+        }
+        else{
         return view('pages/examples/login');
+        }
     }
 
     public function main() {
@@ -130,17 +136,16 @@ class FormController extends Controller {
             $Password = $request->Password;
             $LogIn = User::where('UserName', $UserName)
                             ->where('Password', $Password)->count();
-             if (Auth::attempt(['UserName' => $UserName, 'password' => $Password])) {
-               echo "hai";
-            // Authentication passed...
-           //return redirect('/');
-        }
-//            if ($LogIn == 0) {
-//                $message = "UserName Password doesn't exit";
-//                return view('pages/examples/login')->with('message', $message);
-//            } else {
-//                return view('index');
-//            }
+         
+            if ($LogIn == 0) {
+                $message = "UserName Password doesn't exit";
+                return view('pages/examples/login')->with('message', $message);
+            } else {
+                $user=  User::where('UserName',$UserName)->where('Password',$Password)->first();
+                Auth::login($user);
+                
+                return view('index');
+            }
         }
     }
 
@@ -152,7 +157,7 @@ class FormController extends Controller {
      */
     public function changePassword() {
         
-        echo User::auth();
+       echo Auth::user();
        //return view('pages/examples/changePassword');
     }
 
@@ -168,6 +173,12 @@ class FormController extends Controller {
             return redirect('changepassword')
                             ->withErrors($validator)
                             ->withInput();
+        }
+        else{
+             $OldPassword = $request->OldPassword;
+            $NewPassword = $request->NewPassword;
+            $LogIn = User::where('Password', $OldPassword)->count();
+            
         }
     }
 

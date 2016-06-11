@@ -3,6 +3,7 @@
 
 Route::get('/', array(
     'as'=>'/',
+    'middleware'=>'auth',
     'uses'=>'FormController@main'
 ));
 Route::get('login',array(
