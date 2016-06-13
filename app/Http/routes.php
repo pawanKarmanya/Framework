@@ -1,11 +1,6 @@
 <?php
 
 
-Route::get('/', array(
-    'as'=>'/',
-    'middleware'=>'auth',
-    'uses'=>'FormController@main'
-));
 Route::get('login',array(
     'as'=>'login',
     'uses'=>'FormController@index'
@@ -50,3 +45,10 @@ Route::post('forgotpassword',array(
      'as'=>'passwordforgot',
      'uses'=> 'FormController@passwordforgot'
 ));
+Route::group(['middleware' => ['web','auth','validateBackHistory']], function () {
+    Route::get('/', array(
+    'as'=>'/',
+    'middleware'=>'auth',
+    'uses'=>'FormController@main'
+));
+});

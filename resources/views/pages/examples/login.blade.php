@@ -1,8 +1,13 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta http-equiv="cache-control" content="private, max-age=0, no-cache">
+        <meta http-equiv="pragma" content="no-cache">
+        <meta http-equiv="expires" content="0">
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+
         <title>AdminLTE 2 | Log in</title>
         <!-- Tell the browser to be responsive to screen width -->
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
