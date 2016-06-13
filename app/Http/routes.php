@@ -39,6 +39,7 @@ Route::get('user',array(
 ));
 Route::get('forgotpassword',array(
     'as'=>'forgotpassword',
+    
     'uses'=>'FormController@forgotpassword'
 ));
 Route::post('forgotpassword',array(

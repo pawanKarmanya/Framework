@@ -3,16 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
+use Mail;
 use App\Http\Requests;
-use Illuminate\Support\Facades\Validator;
+use Validator;
 use App\User;
-use Illuminate\Support\Facades\Crypt;
+use Crypt;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
+use DB;
 use Auth;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Session;
+use Redirect;
+use Session;
 
 class FormController extends Controller {
 
@@ -209,7 +209,7 @@ class FormController extends Controller {
     }
 
     public function logout() {
-        Session::flush();
+       Auth::logout();
         return redirect::route('login');
     }
 
