@@ -78,7 +78,7 @@
 
                 <!-- /.social-auth-links -->
 
-                <a href="#">I forgot my password</a><br>
+                <a href="<?php echo e(URL::route('forgotpassword')); ?>">I forgot my password</a><br>
                 <a href="<?php echo e(URL::route('registration')); ?>" class="text-center">Register a new membership</a>
 
             </div>

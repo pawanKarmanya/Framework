@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>AdminLTE 2 | Log in</title>
+        <title>AdminLTE 2 | Forgot Password</title>
         <!-- Tell the browser to be responsive to screen width -->
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <!-- Bootstrap 3.3.6 -->
@@ -51,22 +51,19 @@
             <div class="login-box-body">
                 <p class="login-box-msg">Sign in to start your session</p>
 
-                <form action="{{URL::route('userlogin')}}" method="post" id="loginform">
+                <form action="{{URL::route('passwordforgot')}}" method="post" id='forgotpassword'>
 
                     {{ csrf_field() }}
                     <div class="form-group has-feedback">
                         <input type="email" class="form-control" name="UserName" placeholder="UserName">
                         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                     </div>
-                    <div class="form-group has-feedback">
-                        <input type="password" class="form-control" name="Password" placeholder="Password">
-                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-                    </div>
+                    
                     <div class="row">
 
                         <!-- /.col -->
                         <div class="col-xs-4">
-                            <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+                            <button type="submit" class="btn btn-primary btn-block btn-flat">Submit</button>
                         </div>
                         <!-- /.col -->
                     </div>
@@ -76,8 +73,7 @@
 
                 <!-- /.social-auth-links -->
 
-                <a href="{{URL::route('forgotpassword')}}">I forgot my password</a><br>
-                <a href="{{ URL::route('registration')}}" class="text-center">Register a new membership</a>
+                <a href="{{ URL::route('login')}}" class="text-center">Login Page</a>
 
             </div>
             <!-- /.login-box-body -->

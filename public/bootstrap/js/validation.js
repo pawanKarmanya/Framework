@@ -1,5 +1,22 @@
 $(document).ready(function () {
 
+
+    $('#forgotpassword').validate({
+        rules: {
+            UserName: {
+                required: true,
+                email:true
+            }
+        },
+        messages: {
+            UserName: {
+                required: "Enter a UserName to login",
+                email: "User Name should be registered email address"
+            }
+        }
+
+    });
+
     $('#changePassword').validate({
         rules: {
             OldPassword: {
@@ -12,7 +29,7 @@ $(document).ready(function () {
             },
             ConfirmPassword: {
                 required: true,
-                equalTo: "#Password"
+                equalTo: "#NewPassword"
             }
         },
         messages: {
