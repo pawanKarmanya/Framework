@@ -62,15 +62,21 @@
             <div class="form-group has-feedback">
                 <input type="text" class="form-control" name="FirstName" placeholder="First Name">
                 <span class="glyphicon glyphicon-user form-control-feedback"></span>
+               
             </div>
+            
             <div class="form-group has-feedback">
                 <input type="text" class="form-control" name="LastName" placeholder="Last Name">
                 <span class="glyphicon glyphicon-user form-control-feedback"></span>
+             
             </div>
+            
             <div class="form-group has-feedback">
                 <input type="text" class="form-control" name="UserName" placeholder="UserName">
                 <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+            
             </div>
+            
             <div class="form-group has-feedback">
             <div class="radio">
                 <label>
@@ -88,11 +94,15 @@
             <div class="form-group has-feedback">
                 <input type="password" class="form-control" id="Password" name="Password" placeholder="Password">
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            
             </div>
+            
             <div class="form-group has-feedback">
                 <input type="password" class="form-control" name="ConfirmPassword" placeholder="Confirm Password">
                 <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+            
             </div>
+            
             <div class="row">
 
                 <!-- /.col -->

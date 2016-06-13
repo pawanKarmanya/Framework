@@ -2,10 +2,14 @@ $(document).ready(function () {
 
 
     $('#forgotpassword').validate({
+        errorElement: "div",
+        errorPlacement: function (error, element) {
+            error.appendTo(element.parent("div"));
+        },
         rules: {
             UserName: {
                 required: true,
-                email:true
+                email: true
             }
         },
         messages: {
@@ -18,6 +22,10 @@ $(document).ready(function () {
     });
 
     $('#changePassword').validate({
+        errorElement: "div",
+        errorPlacement: function (error, element) {
+            error.appendTo(element.parent("div"));
+        },
         rules: {
             OldPassword: {
                 required: true,
@@ -51,6 +59,10 @@ $(document).ready(function () {
 
 
     $('#loginform').validate({
+        errorElement: "div",
+        errorPlacement: function (error, element) {
+            error.appendTo(element.parent("div"));
+        },
         rules: {
             UserName: {
                 required: true,
@@ -74,6 +86,10 @@ $(document).ready(function () {
 
     });
     $('#registrationform').validate({
+         errorElement: "div",
+        errorPlacement: function (error, element) {
+            error.appendTo(element.parent("div"));
+        },
         rules: {
             FirstName: {
                 required: true,

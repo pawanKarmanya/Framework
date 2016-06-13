@@ -8,8 +8,13 @@
             .error{
                 list-style: none;
                 color: red;
+                
+            }
+            input.error{
                 border: 1px solid red;
             }
             .para{
                 color: red;
             }
+            
+            
