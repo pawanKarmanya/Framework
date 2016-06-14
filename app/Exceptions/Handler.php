@@ -45,10 +45,12 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
-//        if($e instanceof NotFoundHttpException)
+        
+//        if($e instanceof HttpException)
 //    {
-//        return response()->view('pages/examples/404');
+//        return response()->view('errors/MethodNotAllowedHttpException');
 //    }
+    
         return parent::render($request, $e);
     }
 }

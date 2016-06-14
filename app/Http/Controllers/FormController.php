@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Mail;
@@ -15,15 +16,10 @@ use Illuminate\Support\Facades\Route;
 
 class FormController extends Controller {
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function user(Request $request) {
-       echo $request->url();
-       echo "<br><br>";
-       echo asset('/');
+        echo $request->url();
+        echo "<br><br>";
+        echo asset('/');
     }
 
     public function index() {
@@ -36,13 +32,8 @@ class FormController extends Controller {
         return view('index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create(Request $request) {
-        //
+        
         $validator = Validator::make($request->all(), [
                     'FirstName' => 'required|max:255',
                     'LastName' => 'required|max:255',
@@ -70,8 +61,6 @@ class FormController extends Controller {
 
                 $errorMessage = "UserName Already registered Please use other Email address";
                 return view('pages/examples/RegistrationForm')->with('errorMessage', $errorMessage);
-            
-                
             } else {
                 $InsertValues = User::create(['FirstName' => $FirstName,
                             'LastName' => $LastName,
@@ -82,7 +71,7 @@ class FormController extends Controller {
                             'CreatedAt' => Carbon::now()
                 ]);
 
-                $Link = asset('/')."validate/" . $ValidationToken;
+                $Link = asset('/') . "validate/" . $ValidationToken;
 
 
                 Mail::raw($Link, function ($message)use ($UserName) {
@@ -195,12 +184,6 @@ class FormController extends Controller {
         return redirect::route('login');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function changePassword() {
 
 
@@ -235,51 +218,6 @@ class FormController extends Controller {
                                 ->with('message', 'Please Enter Valid old password');
             }
         }
-    }
-
-    public function store(Request $request) {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id) {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id) {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id) {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id) {
-        //
     }
 
 }
