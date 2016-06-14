@@ -1,11 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Mail;
-use App\Http\Requests;
-use Validator;
 use App\User;
 use Crypt;
 use Carbon\Carbon;
@@ -13,6 +11,7 @@ use DB;
 use Auth;
 use Redirect;
 use Session;
+use Illuminate\Support\Facades\Route;
 
 class FormController extends Controller {
 
@@ -21,26 +20,19 @@ class FormController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function user() {
-//        $username=Auth::user();
-//       $user=User::where('UserName',$username->UserName)->first();
-//        $user->decrement('IsDeleted');
-//        $user->save();
-//        echo User::find(1);
+    public function user(Request $request) {
+       echo $request->url();
+       echo "<br><br>";
+       echo asset('/');
     }
 
     public function index() {
-        //
 
-        if (Auth::check()) {
-            return redirect('/');
-        } else {
-            return view('pages/examples/login');
-        }
+        return view('pages/examples/login');
     }
 
     public function main() {
-        //Auth::logout();
+
         return view('index');
     }
 
@@ -55,7 +47,7 @@ class FormController extends Controller {
                     'FirstName' => 'required|max:255',
                     'LastName' => 'required|max:255',
                     'GenderId' => 'required|max:6',
-                    'UserName' => 'required|email',
+                    'UserName' => 'required|email|unique:User,UserName',
                     'Password' => 'required|min:8',
         ]);
 
@@ -78,6 +70,8 @@ class FormController extends Controller {
 
                 $errorMessage = "UserName Already registered Please use other Email address";
                 return view('pages/examples/RegistrationForm')->with('errorMessage', $errorMessage);
+            
+                
             } else {
                 $InsertValues = User::create(['FirstName' => $FirstName,
                             'LastName' => $LastName,
@@ -88,7 +82,7 @@ class FormController extends Controller {
                             'CreatedAt' => Carbon::now()
                 ]);
 
-                $Link = "http://framework.karmanya.co.in/validate/" . $ValidationToken;
+                $Link = asset('/')."validate/" . $ValidationToken;
 
 
                 Mail::raw($Link, function ($message)use ($UserName) {
@@ -104,11 +98,8 @@ class FormController extends Controller {
     }
 
     public function forgotpassword() {
-        if (Auth::check()) {
-            return redirect('/');
-        } else {
-            return view('pages/examples/forgotpassword');
-        }
+
+        return view('pages/examples/forgotpassword');
     }
 
     public function passwordforgot(Request $request) {
@@ -124,11 +115,11 @@ class FormController extends Controller {
                             ->withErrors($validator)
                             ->withInput();
         } else {
-            $UserName=$request->UserName;
-            $validate=User::where('UserName',$UserName)->count();
-            if($validate==1){
-                $getPassword=User::where('UserName',$UserName)->first();
-                   $password=$getPassword->Password;     
+            $UserName = $request->UserName;
+            $validate = User::where('UserName', $UserName)->count();
+            if ($validate == 1) {
+                $getPassword = User::where('UserName', $UserName)->first();
+                $password = $getPassword->Password;
                 Mail::raw($password, function ($message)use ($UserName) {
                     //
                     $message->from('pawankumar.s@karmanya.co.in', 'Registration');
@@ -137,23 +128,16 @@ class FormController extends Controller {
                 });
                 $Message = "Password Has been sent to your email address";
                 return view('pages/examples/forgotpassword')->with('message', $Message);
-            
-            }
-            else{
-                    $Message = "UserName doesn't exits";
+            } else {
+                $Message = "UserName doesn't exits";
                 return view('pages/examples/forgotpassword')->with('message', $Message);
-            
             }
         }
     }
 
     public function createView() {
-        //
-        if (Auth::check()) {
-            return redirect('/');
-        } else {
-            return view('pages/examples/RegistrationForm');
-        }
+
+        return view('pages/examples/RegistrationForm');
     }
 
     public function validateToken($token) {
@@ -202,14 +186,12 @@ class FormController extends Controller {
                 $user = User::where('UserName', $UserName)->where('Password', $Password)->first();
                 Auth::login($user);
                 return redirect()->intended('/');
-                //return redirect::route("/");
-                //return view('index');
             }
         }
     }
 
     public function logout() {
-       Auth::logout();
+        Auth::logout();
         return redirect::route('login');
     }
 
