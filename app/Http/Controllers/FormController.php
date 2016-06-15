@@ -15,6 +15,7 @@ use Session;
 use Illuminate\Support\Facades\Route;
 use Event;
 use App\Events\UserLoggedIn;
+use Exception;
 
 class FormController extends Controller {
 
@@ -22,7 +23,6 @@ class FormController extends Controller {
         echo $request->url();
         echo "<br><br>";
         echo asset('/');
-       
     }
 
     public function index() {
@@ -36,7 +36,7 @@ class FormController extends Controller {
     }
 
     public function create(Request $request) {
-        
+
         $validator = Validator::make($request->all(), [
                     'FirstName' => 'required|max:255',
                     'LastName' => 'required|max:255',
@@ -65,26 +65,28 @@ class FormController extends Controller {
                 $errorMessage = "UserName Already registered Please use other Email address";
                 return view('pages/examples/RegistrationForm')->with('errorMessage', $errorMessage);
             } else {
-                $InsertValues = User::create(['FirstName' => $FirstName,
-                            'LastName' => $LastName,
-                            'GenderId' => $GenderId,
-                            'UserName' => $UserName,
-                            'Password' => $Password,
-                            'ValidationToken' => $ValidationToken,
-                            'CreatedAt' => Carbon::now()
-                ]);
+                try {
+                    $Link = asset('/') . "validate/" . $ValidationToken;
+                    Mail::raw($Link, function ($message)use ($UserName) {
+                        //
+                        $message->from('pawankumar.s@karmanya.co.in', 'Registration');
 
-                $Link = asset('/') . "validate/" . $ValidationToken;
-
-
-                Mail::raw($Link, function ($message)use ($UserName) {
-                    //
-                    $message->from('pawankumar.s@karmanya.co.in', 'Registration');
-
-                    $message->to($UserName)->subject('Validate the Registration');
-                });
-                $Message = "Registration complete please validate the link sent to your email";
-                return view('pages/examples/RegistrationForm')->with('message', $Message);
+                        $message->to($UserName)->subject('Validate the Registration');
+                    });
+                    $InsertValues = User::create(['FirstName' => $FirstName,
+                                'LastName' => $LastName,
+                                'GenderId' => $GenderId,
+                                'UserName' => $UserName,
+                                'Password' => $Password,
+                                'ValidationToken' => $ValidationToken,
+                                'CreatedAt' => Carbon::now()
+                    ]);
+                    $Message = "Registration complete please validate the link sent to your email";
+                    return view('pages/examples/RegistrationForm')->with('message', $Message);
+                } catch (Exception $e) {
+                    $Message = "Mail Could not be sent please try again ";
+                    return view('pages/examples/RegistrationForm')->with('errorMessage', $Message);
+                }
             }
         }
     }
@@ -112,14 +114,19 @@ class FormController extends Controller {
             if ($validate == 1) {
                 $getPassword = User::where('UserName', $UserName)->first();
                 $password = $getPassword->Password;
-                Mail::raw($password, function ($message)use ($UserName) {
-                    //
-                    $message->from('pawankumar.s@karmanya.co.in', 'Registration');
+                try {
+                    Mail::raw($password, function ($message)use ($UserName) {
+                        //
+                        $message->from('pawankumar.s@karmanya.co.in', 'Registration');
 
-                    $message->to($UserName)->subject('Password');
-                });
-                $Message = "Password Has been sent to your email address";
-                return view('pages/examples/forgotpassword')->with('message', $Message);
+                        $message->to($UserName)->subject('Password');
+                    });
+                    $Message = "Password Has been sent to your email address";
+                    return view('pages/examples/forgotpassword')->with('message', $Message);
+                } catch (Exception $e) {
+                    $Message = "Password Could not be sent to your mail try again";
+                    return view('pages/examples/forgotpassword')->with('message', $Message);
+                }
             } else {
                 $Message = "UserName doesn't exits";
                 return view('pages/examples/forgotpassword')->with('message', $Message);
