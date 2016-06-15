@@ -11,10 +11,14 @@ Route::get('registration',array(
     'middleware'=>'valid',
     'uses'=>'FormController@createView'
 ));
-Route::post('register',array(
+Route::group(['middlewareGroups'=>['web']],function(){
+    
+    Route::post('register',array(
     'as'=>'register',
-    'middlewareGroups'=>'web',
     'uses'=>'FormController@create'));
+    
+});
+
 
 Route::get('validate/{token}',array(
     'as'=>'validate',
@@ -22,7 +26,7 @@ Route::get('validate/{token}',array(
 ));
 Route::post('/',array(
     'as'=>'userlogin',
-    'middlewareGroups'=>'web',
+    'before'=>'csrf',
     'uses'=>'FormController@loginUser'
 ));
 
@@ -30,11 +34,7 @@ Route::get('changepassword',array(
     'as'=>'changepassword',
      'middleware'=>'auth',
     'uses'=> 'FormController@changePassword'));
-Route::post('changepassword',array(
-     'as'=>'change',
-    'middlewareGroups'=>'web',
-     'uses'=> 'FormController@changeSubmit'
-));
+
 Route::get('logout',array(
     'as'=>'logout',
     
@@ -49,16 +49,25 @@ Route::get('forgotpassword',array(
     'middleware'=>'valid',
     'uses'=>'FormController@forgotpassword'
 ));
+Route::group(['middlewareGroups'=>['web']],function(){
+    
 Route::post('forgotpassword',array(
      'as'=>'passwordforgot',
-    'middlewareGroups'=>'web',
-     'uses'=> 'FormController@passwordforgot'
+    'uses'=> 'FormController@passwordforgot'
+));    
+   
+Route::post('changepassword',array(
+     'as'=>'change',
+     'uses'=> 'FormController@changeSubmit'
 ));
-Route::group(['middleware' => ['web','auth','validateBackHistory']], function () {
+});
+
+Route::group(['middleware' => ['web','validateBackHistory']], function () {
     Route::get('/', array(
     'as'=>'/',
     'middleware'=>'auth',
     'uses'=>'FormController@main'
 ));
 });
+
 

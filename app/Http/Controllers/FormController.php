@@ -13,6 +13,8 @@ use Auth;
 use Redirect;
 use Session;
 use Illuminate\Support\Facades\Route;
+use Event;
+use App\Events\UserLoggedIn;
 
 class FormController extends Controller {
 
@@ -20,6 +22,7 @@ class FormController extends Controller {
         echo $request->url();
         echo "<br><br>";
         echo asset('/');
+       
     }
 
     public function index() {
@@ -174,6 +177,7 @@ class FormController extends Controller {
             } else {
                 $user = User::where('UserName', $UserName)->where('Password', $Password)->first();
                 Auth::login($user);
+                Event::fire(new UserLoggedIn($user->UserName));
                 return redirect()->intended('/');
             }
         }
